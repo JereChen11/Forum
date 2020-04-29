@@ -2,20 +2,21 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp">
 
     <ImageView
         android:id="@+id/portrait_iv"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_margin="30dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="30dp"
         android:background="@drawable/me_portrait_style"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/name_tv"
-        style="@style/TopicChatTextStyle"
+        style="@style/TopicChatCommentsTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -26,7 +27,7 @@
 
     <TextView
         android:id="@+id/publish_time_tv"
-        style="@style/TopicChatTextStyle"
+        style="@style/TopicChatCommentsTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -38,10 +39,10 @@
 
     <TextView
         android:id="@+id/topic_content_tv"
-        style="@style/TopicChatTextStyle"
+        style="@style/TopicChatCommentsTextStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="30dp"
         android:ellipsize="end"
         android:maxLines="1"
@@ -55,14 +56,14 @@
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="100dp"
+        android:layout_marginEnd="50dp"
         android:src="@drawable/give_a_unlike_icon"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/topic_content_tv" />
 
     <TextView
         android:id="@+id/like_number_tv"
-        style="@style/TopicChatTextStyle"
+        style="@style/TopicChatCommentsTextStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
@@ -74,7 +75,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:background="@color/gray"
         app:layout_constraintTop_toBottomOf="@id/like_number_tv" />
 

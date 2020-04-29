@@ -24,4 +24,9 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="TopicChatCommentsTextStyle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/gray</item>
+    </style>
+
 </resources>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
@@ -27,6 +26,7 @@ import java.util.List;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -34,8 +34,7 @@ import butterknife.OnClick;
  */
 public class HomeActivity extends BaseActivity {
 
-    @BindView(R.id.fragment)
-    FrameLayout fragment;
+
     @BindView(R.id.chats_btn)
     Button chatsBtn;
     @BindView(R.id.me_btn)
@@ -110,5 +109,12 @@ public class HomeActivity extends BaseActivity {
             default:
                 break;
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }
