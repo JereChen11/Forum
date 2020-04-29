@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageView
+        android:id="@+id/portrait_iv"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_margin="30dp"
+        android:background="@drawable/me_portrait_style" />
+
+    <TextView
+        android:id="@+id/name_tv"
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/portrait_iv"
+        app:layout_constraintStart_toEndOf="@id/portrait_iv"
+        app:layout_constraintTop_toTopOf="@id/portrait_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Adam777" />
+
+    <TextView
+        android:id="@+id/publish_time_tv"
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/portrait_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/portrait_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="30dp"
+        android:text="2020-4-27" />
+
+    <TextView
+        android:id="@+id/topic_title_tv"
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/portrait_iv"
+        app:layout_constraintTop_toBottomOf="@id/portrait_iv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="Anyone here? Let's have a chat~Anyone here?" />
+
+    <ImageView
+        android:id="@+id/like_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/topic_title_tv"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="130dp"
+        android:src="@drawable/give_a_unlike_icon" />
+
+    <TextView
+        android:id="@+id/like_number_tv"
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/like_iv"
+        app:layout_constraintStart_toEndOf="@id/like_iv"
+        app:layout_constraintTop_toTopOf="@id/like_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="500" />
+
+    <TextView
+        android:id="@+id/view_number_tv"
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/like_iv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/like_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:text="209" />
+
+    <TextView
+        style="@style/TopicChatTextStyle"
+        app:layout_constraintBottom_toBottomOf="@id/like_iv"
+        app:layout_constraintEnd_toStartOf="@id/view_number_tv"
+        app:layout_constraintTop_toTopOf="@id/like_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="Re: " />
+
+    <View
+        app:layout_constraintTop_toBottomOf="@id/view_number_tv"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/gray" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

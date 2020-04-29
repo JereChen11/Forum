@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeActivity">
+
+    <FrameLayout
+        android:id="@+id/fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/home_bottom_bar_container_ll"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/home_bottom_bar_container_ll"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/white_smoke"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <Button
+            android:id="@+id/chats_btn"
+            style="@style/HomeBottomButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Chats" />
+
+        <Button
+            android:id="@+id/me_btn"
+            style="@style/HomeBottomButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Me" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
