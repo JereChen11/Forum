@@ -66,8 +66,8 @@ public class MeFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.portrait_iv:
-                break;
             case R.id.nick_name_tv:
+                startActivity(new Intent(getActivity(), ProfileActivity.class));
                 break;
             case R.id.settings_iv:
                 break;

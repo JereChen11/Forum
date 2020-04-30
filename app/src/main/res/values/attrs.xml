@@ -9,4 +9,9 @@
         <attr name="meListItemTitleText" format="string" />
         <attr name="meListIconReference" format="reference" />
     </declare-styleable>
+
+    <style name="ProfileBlackTextStyle" >
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

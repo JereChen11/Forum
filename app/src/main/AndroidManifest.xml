@@ -3,19 +3,23 @@
     package="com.jere.forum">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name="com.jere.forum.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@drawable/forum_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/forum_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.jere.forum.me.MyChartActivity"></activity>
-        <activity android:name="com.jere.forum.chats.TopicDetailActivity" />
-        <activity android:name="com.jere.forum.chats.NewTopicActivity" />
-        <activity android:name="com.jere.forum.HomeActivity">
+        <activity android:name=".me.ProfileActivity"></activity>
+        <activity android:name=".me.MyChartActivity" />
+        <activity android:name=".chats.TopicDetailActivity" />
+        <activity android:name=".chats.NewTopicActivity" />
+        <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
