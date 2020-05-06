@@ -68,7 +68,7 @@ public class HomeActivity extends BaseActivity {
     @Override
     public void doBusiness(Context mContext) {
 
-        if (!Settings.getInstance(this).getIsInitChatsDb()) {
+        if (!Settings.getInstance().getIsInitChatsDb()) {
             DaoSession daoSession = ((App) getApplication()).getDaoSession();
             chatsListItemEntityDao = daoSession.getChatsListItemEntityDao();
 
@@ -85,7 +85,7 @@ public class HomeActivity extends BaseActivity {
                 for (ChatsListItemBean.DataBean dataBean : chatsListItemDataList) {
                     chatsListItemEntityDao.insertOrReplace(dataBean.convertToEntity());
                 }
-                Settings.getInstance(this).setIsInitChatsDb(true);
+                Settings.getInstance().setIsInitChatsDb(true);
             }).start();
         }
     }
@@ -110,11 +110,5 @@ public class HomeActivity extends BaseActivity {
                 break;
         }
     }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // TODO: add setContentView(...) invocation
-        ButterKnife.bind(this);
-    }
+    
 }

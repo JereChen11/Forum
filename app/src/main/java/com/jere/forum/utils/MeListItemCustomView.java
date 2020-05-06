@@ -41,9 +41,7 @@ public class MeListItemCustomView extends ConstraintLayout {
         titleTv.setText(titleTextString);
 
         int iconResourceId = typedArray.getResourceId(R.styleable.MeListItemCustomView_meListIconReference, R.drawable.ic_launcher_background);
-        RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)//不做磁盘缓存
-                .skipMemoryCache(true);//不做内存缓存
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(this).load(iconResourceId).apply(requestOptions).into(iconIv);
 
         typedArray.recycle();

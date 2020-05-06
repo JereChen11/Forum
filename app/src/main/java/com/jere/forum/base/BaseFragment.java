@@ -11,18 +11,19 @@ import androidx.fragment.app.Fragment;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
+/**
+ * @author jere
+ */
 public abstract class BaseFragment extends Fragment {
 
     private View mContentView;
     private Unbinder unbinder;
-    private Context mContext;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mContentView = inflater.inflate(setLayoutResourceId(), container, false);
         unbinder = ButterKnife.bind(this, mContentView);
-        mContext = getContext();
         init();
         setUpView();
         setUpData();

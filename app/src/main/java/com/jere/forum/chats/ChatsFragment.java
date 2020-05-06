@@ -153,9 +153,7 @@ public class ChatsFragment extends BaseFragment {
 
             ChatsFragment fragment = (ChatsFragment) weakReference.get();
             if (fragment != null) {
-                RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true);
+                RequestOptions requestOptions = RequestOptions.circleCropTransform();
                 Glide.with(fragment).load(data.getPortrait()).apply(requestOptions).into(holder.portraitIv);
                 holder.nameTv.setText(data.getAuthor());
                 holder.publishTimeTv.setText(data.getDate());

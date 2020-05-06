@@ -111,9 +111,7 @@ public class TopicDetailActivity extends BaseActivity {
             topicNoCommentsTv.setVisibility(View.GONE);
         }
 
-        RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true);
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(this).load(mChatsDetailData.getPortrait()).apply(requestOptions).into(portraitIv);
         nameTv.setText(mChatsDetailData.getAuthor());
         publishTimeTv.setText(mChatsDetailData.getDate());
@@ -189,7 +187,7 @@ public class TopicDetailActivity extends BaseActivity {
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 String formattedDate = df.format(c);
                 commentListItemBean.setDate(formattedDate);
-                commentListItemBean.setAuthor(Settings.getInstance(this).getNickname());
+                commentListItemBean.setAuthor(Settings.getInstance().getNickname());
 //                commentListItemBean.setContent(topicCommentsEt.getText().toString());
                 commentListItemBean.setContent("new comments~");
                 chatsCommentListItemEntityDao.insertOrReplace(commentListItemBean.convertToEntity());
@@ -245,9 +243,7 @@ public class TopicDetailActivity extends BaseActivity {
 
             Context context = weakReference.get();
             if (context != null) {
-                RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                        .diskCacheStrategy(DiskCacheStrategy.NONE)
-                        .skipMemoryCache(true);
+                RequestOptions requestOptions = RequestOptions.circleCropTransform();
                 Glide.with(context).load(data.getPortrait()).apply(requestOptions).into(holder.portraitIv);
                 holder.nameTv.setText(data.getAuthor());
                 holder.publishTimeTv.setText(data.getDate());

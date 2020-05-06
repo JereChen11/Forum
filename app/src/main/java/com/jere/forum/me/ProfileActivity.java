@@ -1,13 +1,5 @@
 package com.jere.forum.me;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.FileProvider;
-import butterknife.BindView;
-import butterknife.OnClick;
-
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -37,6 +29,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.FileProvider;
+import butterknife.BindView;
+import butterknife.OnClick;
+
+/**
+ * @author jere
+ */
 public class ProfileActivity extends BaseActivity implements PermissionsUtils.PermissionResultCallback {
     private static final int TAKE_PHOTO_REQUEST_CODE = 1;
     private static final int FROM_ALBUM_REQUEST_CODE = 2;
@@ -80,14 +82,12 @@ public class ProfileActivity extends BaseActivity implements PermissionsUtils.Pe
 
     @Override
     public void initView(View view) {
-        nicknameDetailContentTv.setText(Settings.getInstance(this).getNickname());
-        String avatarUriString = Settings.getInstance(this).getAvatarUrl();
+        nicknameDetailContentTv.setText(Settings.getInstance().getNickname());
+        String avatarUriString = Settings.getInstance().getAvatarUrl();
         if (!TextUtils.isEmpty(avatarUriString)) {
             setAvatar(avatarUriString);
         } else {
-            RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                    .diskCacheStrategy(DiskCacheStrategy.NONE)//不做磁盘缓存
-                    .skipMemoryCache(true);//不做内存缓存
+            RequestOptions requestOptions = RequestOptions.circleCropTransform();
             Glide.with(this).load(R.drawable.portrait_icon).apply(requestOptions).into(avatarPictureIv);
         }
     }
@@ -132,7 +132,7 @@ public class ProfileActivity extends BaseActivity implements PermissionsUtils.Pe
 
     private void showChangeNicknameDialog() {
         final EditText setNicknameEt = new EditText(this);
-        setNicknameEt.setText(Settings.getInstance(this).getNickname());
+        setNicknameEt.setText(Settings.getInstance().getNickname());
         AlertDialog alertDialog = new AlertDialog.Builder(this)
                 .setTitle("please input new nickname!")
                 .setView(setNicknameEt)
@@ -141,7 +141,7 @@ public class ProfileActivity extends BaseActivity implements PermissionsUtils.Pe
                     public void onClick(DialogInterface dialog, int which) {
                         if (!TextUtils.isEmpty(setNicknameEt.getText().toString())) {
                             String newNickname = setNicknameEt.getText().toString();
-                            Settings.getInstance(ProfileActivity.this).setNickname(newNickname);
+                            Settings.getInstance().setNickname(newNickname);
                             nicknameDetailContentTv.setText(newNickname);
                             dialog.dismiss();
                         } else {
@@ -208,14 +208,14 @@ public class ProfileActivity extends BaseActivity implements PermissionsUtils.Pe
             case TAKE_PHOTO_REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK) {
                     setAvatar(imageUri.toString());
-                    Settings.getInstance(this).setAvatarUrl(imageUri.toString());
+                    Settings.getInstance().setAvatarUrl(imageUri.toString());
                 }
                 break;
             case FROM_ALBUM_REQUEST_CODE:
                 if (resultCode == Activity.RESULT_OK && data != null) {
                     Uri uri = data.getData();
                     setAvatar(uri.toString());
-                    Settings.getInstance(this).setAvatarUrl(uri.toString());
+                    Settings.getInstance().setAvatarUrl(uri.toString());
                 }
             default:
                 break;
@@ -223,9 +223,7 @@ public class ProfileActivity extends BaseActivity implements PermissionsUtils.Pe
     }
 
     private void setAvatar(String avatarUriString) {
-        RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)//不做磁盘缓存
-                .skipMemoryCache(true);//不做内存缓存
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
         Glide.with(this).load(Uri.parse(avatarUriString)).apply(requestOptions).into(avatarPictureIv);
     }
 

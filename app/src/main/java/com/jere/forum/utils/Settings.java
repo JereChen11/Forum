@@ -3,6 +3,8 @@ package com.jere.forum.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.jere.forum.App;
+
 import static android.content.Context.MODE_PRIVATE;
 
 /**
@@ -20,18 +22,16 @@ public class Settings {
     private static final String RE_PASSWORD_KEY = "RE_PASSWORD";
     private static final String IS_INIT_CHATS_DB_KEY = "IS_INIT_CHATS_DB";
 
-    private Context mContext;
 
     private Settings(Context context) {
-        mContext = context;
-        mSp = mContext.getSharedPreferences(SETTINGS_SP_KEY, MODE_PRIVATE);
+        mSp = context.getSharedPreferences(SETTINGS_SP_KEY, MODE_PRIVATE);
     }
 
-    public static Settings getInstance(Context context) {
+    public static Settings getInstance() {
         if (instance == null) {
             synchronized (Settings.class) {
                 if (instance == null) {
-                    instance = new Settings(context.getApplicationContext());
+                    instance = new Settings(App.getInstance().getApplicationContext());
                 }
             }
         }

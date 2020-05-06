@@ -81,7 +81,7 @@ public class NewTopicActivity extends BaseActivity {
                     SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     String formattedDate = df.format(c);
                     chatsListItemBean.setDate(formattedDate);
-                    chatsListItemBean.setAuthor(Settings.getInstance(NewTopicActivity.this).getNickname());
+                    chatsListItemBean.setAuthor(Settings.getInstance().getNickname());
                     chatsListItemBean.setId((long) (mChatsListData.size() + 1));
                     chatsListItemEntityDao.insert(chatsListItemBean.convertToEntity());
                     finish();

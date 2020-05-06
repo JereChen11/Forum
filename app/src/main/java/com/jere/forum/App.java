@@ -12,10 +12,16 @@ import org.greenrobot.greendao.database.Database;
  */
 public class App extends Application {
     private DaoSession daoSession;
+    public static App app;
+
+    public static App getInstance() {
+        return app;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
+        app = this;
 
         // regular SQLite database
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "chats-db");

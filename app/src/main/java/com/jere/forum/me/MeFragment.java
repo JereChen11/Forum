@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jere.forum.R;
 import com.jere.forum.base.BaseFragment;
@@ -45,16 +44,14 @@ public class MeFragment extends BaseFragment {
 
     @Override
     protected void setUpView() {
-        String avatarUriString = Settings.getInstance(getContext()).getAvatarUrl();
-        RequestOptions requestOptions = RequestOptions.circleCropTransform()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
-                .skipMemoryCache(true);
+        String avatarUriString = Settings.getInstance().getAvatarUrl();
+        RequestOptions requestOptions = RequestOptions.circleCropTransform();
         if (!TextUtils.isEmpty(avatarUriString)) {
             Glide.with(this).load(Uri.parse(avatarUriString)).apply(requestOptions).into(portraitIv);
         } else {
             Glide.with(this).load(R.drawable.portrait_icon).apply(requestOptions).into(portraitIv);
         }
-        nickNameTv.setText(Settings.getInstance(getContext()).getNickname());
+        nickNameTv.setText(Settings.getInstance().getNickname());
     }
 
     @Override
