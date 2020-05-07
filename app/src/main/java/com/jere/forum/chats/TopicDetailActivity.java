@@ -2,17 +2,16 @@ package com.jere.forum.chats;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.jere.forum.App;
 import com.jere.forum.R;
@@ -48,43 +47,30 @@ import butterknife.OnClick;
  * @author jere
  */
 public class TopicDetailActivity extends BaseActivity {
-
-    @BindView(R.id.reply_tv)
-    TextView replyTv;
-    @BindView(R.id.portrait_iv)
-    ImageView portraitIv;
-    @BindView(R.id.name_tv)
-    TextView nameTv;
-    @BindView(R.id.publish_time_tv)
-    TextView publishTimeTv;
-    @BindView(R.id.topic_title_tv)
-    TextView topicTitleTv;
-    @BindView(R.id.topic_content_tv)
-    TextView topicContentTv;
-    @BindView(R.id.like_iv)
-    ImageView likeIv;
-    @BindView(R.id.like_number_tv)
-    TextView likeNumberTv;
-    @BindView(R.id.topic_content_container_cl)
-    ConstraintLayout topicContentContainerCl;
-    @BindView(R.id.replies_tv)
-    TextView repliesTv;
-    @BindView(R.id.topic_comments_rcy)
-    RecyclerView topicCommentsRcy;
+    @BindView(R.id.topic_detail_divide_line_view)
+    View topicDetailDivideLineView;
     @BindView(R.id.topic_comments_et)
     EditText topicCommentsEt;
-    @BindView(R.id.topic_no_comments_tv)
-    TextView topicNoCommentsTv;
+    @BindView(R.id.send_btn)
+    Button sendBtn;
+    @BindView(R.id.comment_container_cl)
+    ConstraintLayout commentContainerCl;
+    @BindView(R.id.topic_detail_rcy)
+    RecyclerView topicDetailRcy;
 
     private ChatsListItemBean.DataBean mChatsDetailData;
     private ChatsListItemEntityDao chatsListItemEntityDao;
     private ChatsCommentListItemEntityDao chatsCommentListItemEntityDao;
     private ArrayList<ChatsCommentListItemBean.DataBean> chatsCommentListBeanData;
-    private TopicDetailCommentsListAdapter mAdapter;
+    private TopicDetailAdapter mAdapter;
+    private List<ArrayList> detailData = new ArrayList<>();
 
     @Override
     public void initParams(Bundle params) {
         mChatsDetailData = (ChatsListItemBean.DataBean) params.get(ChatsFragment.TOPIC_DETAIL_KEY);
+        ArrayList<ChatsListItemBean.DataBean> list = new ArrayList<>();
+        list.add(mChatsDetailData);
+        detailData.add(list);
     }
 
     @Override
@@ -104,45 +90,9 @@ public class TopicDetailActivity extends BaseActivity {
         chatsCommentListItemEntityDao = daoSession.getChatsCommentListItemEntityDao();
 
         queryChatsListItemTable();
-        mAdapter = new TopicDetailCommentsListAdapter(this, chatsCommentListBeanData);
-        topicCommentsRcy.setAdapter(mAdapter);
-
-        if (chatsCommentListBeanData.size() > 0) {
-            topicNoCommentsTv.setVisibility(View.GONE);
-        }
-
-        RequestOptions requestOptions = RequestOptions.circleCropTransform();
-        Glide.with(this).load(mChatsDetailData.getPortrait()).apply(requestOptions).into(portraitIv);
-        nameTv.setText(mChatsDetailData.getAuthor());
-        publishTimeTv.setText(mChatsDetailData.getDate());
-        topicTitleTv.setText(mChatsDetailData.getTitle());
-        topicContentTv.setText(mChatsDetailData.getContent());
-        likeNumberTv.setText(String.valueOf(mChatsDetailData.getLikeNumber()));
-        if (mChatsDetailData.isIsLike()) {
-            Glide.with(this).load(R.drawable.give_a_like_icon).into(likeIv);
-        } else {
-            Glide.with(this).load(R.drawable.give_a_unlike_icon).into(likeIv);
-        }
-
-        topicCommentsEt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (topicCommentsEt.getText().toString().length() > 10) {
-                    showToast("please limit content on 50 char.");
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
+        detailData.add(chatsCommentListBeanData);
+        mAdapter = new TopicDetailAdapter(this, detailData);
+        topicDetailRcy.setAdapter(mAdapter);
     }
 
     @Override
@@ -153,8 +103,6 @@ public class TopicDetailActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        queryChatsListItemTable();
-        mAdapter.setData(chatsCommentListBeanData);
     }
 
     private void queryChatsListItemTable() {
@@ -166,17 +114,19 @@ public class TopicDetailActivity extends BaseActivity {
         ChatsListItemEntity chatsListItemEntity = chatsListItemEntityList.get(0);
         List<ChatsCommentListItemEntity> chatsCommentListItemEntities = chatsListItemEntity.getChatComments();
         chatsCommentListBeanData = new ArrayList<>();
-        for (ChatsCommentListItemEntity entity: chatsCommentListItemEntities) {
+        for (ChatsCommentListItemEntity entity : chatsCommentListItemEntities) {
             chatsCommentListBeanData.add(entity.convertToBean());
         }
     }
 
-    @OnClick({R.id.reply_tv, R.id.like_iv})
+    @OnClick({R.id.send_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.reply_tv:
-                showInputMethod();
-
+            case R.id.send_btn:
+                if (TextUtils.isEmpty(topicCommentsEt.getText().toString())) {
+                    showToast("Please input content~");
+                    break;
+                }
                 ChatsCommentListItemBean.DataBean commentListItemBean = new ChatsCommentListItemBean.DataBean();
                 commentListItemBean.setChatsTopicId(mChatsDetailData.getId());
                 commentListItemBean.setLikeNumber(0);
@@ -188,102 +138,165 @@ public class TopicDetailActivity extends BaseActivity {
                 String formattedDate = df.format(c);
                 commentListItemBean.setDate(formattedDate);
                 commentListItemBean.setAuthor(Settings.getInstance().getNickname());
-//                commentListItemBean.setContent(topicCommentsEt.getText().toString());
-                commentListItemBean.setContent("new comments~");
+                commentListItemBean.setContent(topicCommentsEt.getText().toString());
+                commentListItemBean.setId((long) (chatsCommentListBeanData.size() + 1));
+                chatsCommentListBeanData.add(commentListItemBean);
+                detailData.set(1, chatsCommentListBeanData);
+                mAdapter.setData(detailData);
+                //scroll to recyclerView bottom and clear EditText
+                topicDetailRcy.smoothScrollToPosition(chatsCommentListBeanData.size() + 1);
+                topicCommentsEt.clearFocus();
+                topicCommentsEt.setText("");
                 chatsCommentListItemEntityDao.insertOrReplace(commentListItemBean.convertToEntity());
 
-                break;
-            case R.id.like_iv:
-                if (mChatsDetailData.isIsLike()) {
-                    Glide.with(TopicDetailActivity.this).load(R.drawable.give_a_unlike_icon).into(likeIv);
-                    mChatsDetailData.setIsLike(false);
-                    int newLikeNumber = mChatsDetailData.getLikeNumber() - 1;
-                    likeNumberTv.setText(String.valueOf(newLikeNumber));
-                    mChatsDetailData.setLikeNumber(newLikeNumber);
-                } else {
-                    Glide.with(TopicDetailActivity.this).load(R.drawable.give_a_like_icon).into(likeIv);
-                    mChatsDetailData.setIsLike(true);
-                    int newLikeNumber = mChatsDetailData.getLikeNumber() + 1;
-                    likeNumberTv.setText(String.valueOf(newLikeNumber));
-                    mChatsDetailData.setLikeNumber(newLikeNumber);
-                }
-
-                chatsListItemEntityDao.update(mChatsDetailData.convertToEntity());
-
+                hideSoftInput();
                 break;
             default:
                 break;
         }
     }
 
-    public static class TopicDetailCommentsListAdapter extends RecyclerView.Adapter<TopicDetailCommentsListAdapter.MyViewHolder> {
-        private ArrayList<ChatsCommentListItemBean.DataBean> chatsCommentListData;
-        private WeakReference<Context> weakReference;
+    public class TopicDetailAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-        public TopicDetailCommentsListAdapter(Context context, ArrayList<ChatsCommentListItemBean.DataBean> chatsCommentListData) {
+        private WeakReference<Context> weakReference;
+        private static final int DETAIL = 0;
+        private static final int COMMENTS = 1;
+        private List<ArrayList> listData;
+
+        TopicDetailAdapter(Context context, List<ArrayList> listDat) {
             this.weakReference = new WeakReference<>(context);
-            this.chatsCommentListData = chatsCommentListData;
+            this.listData = listDat;
         }
 
-        public void setData(ArrayList<ChatsCommentListItemBean.DataBean> chatsCommentListData) {
-            this.chatsCommentListData = chatsCommentListData;
+        void setData(List<ArrayList> listData) {
+            this.listData = listData;
             notifyDataSetChanged();
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0) {
+                return DETAIL;
+            } else {
+                return COMMENTS;
+            }
         }
 
         @NonNull
         @Override
-        public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_list_item_view_topic_comment_item, parent, false);
-            return new MyViewHolder(view);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view;
+            switch (viewType) {
+                case 0:
+                    view = layoutInflater.inflate(R.layout.recycler_list_item_view_topic_detail_item, parent, false);
+                    return new TopicDetailViewHolder(view);
+                case 1:
+                    view = layoutInflater.inflate(R.layout.recycler_list_item_view_topic_comment_item, parent, false);
+                    return new CommentsViewHolder(view);
+                default:
+                    break;
+            }
+            return null;
         }
 
         @Override
-        public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-            ChatsCommentListItemBean.DataBean data = chatsCommentListData.get(position);
-
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
             Context context = weakReference.get();
-            if (context != null) {
-                RequestOptions requestOptions = RequestOptions.circleCropTransform();
-                Glide.with(context).load(data.getPortrait()).apply(requestOptions).into(holder.portraitIv);
-                holder.nameTv.setText(data.getAuthor());
-                holder.publishTimeTv.setText(data.getDate());
-                holder.topicContentTv.setText(data.getContent());
-                holder.likeNumberTv.setText(String.valueOf(data.getLikeNumber()));
-                if (data.isIsLike()) {
-                    Glide.with(context).load(R.drawable.give_a_like_icon).into(holder.likeIv);
-                } else {
-                    Glide.with(context).load(R.drawable.give_a_unlike_icon).into(holder.likeIv);
-                }
-                holder.likeIv.setOnClickListener(new OnClickEvent() {
-                    @Override
-                    public void onSingleClick(View v) {
-                        if (data.isIsLike()) {
-                            Glide.with(context).load(R.drawable.give_a_unlike_icon).into(holder.likeIv);
-                            data.setIsLike(false);
-                            int newLikeNumber = data.getLikeNumber() - 1;
-                            holder.likeNumberTv.setText(String.valueOf(newLikeNumber));
-                            data.setLikeNumber(newLikeNumber);
-                        } else {
-                            Glide.with(context).load(R.drawable.give_a_like_icon).into(holder.likeIv);
-                            data.setIsLike(true);
-                            int newLikeNumber = data.getLikeNumber() + 1;
-                            holder.likeNumberTv.setText(String.valueOf(newLikeNumber));
-                            data.setLikeNumber(newLikeNumber);
-                        }
-                        //todo update db
+            if (holder instanceof TopicDetailViewHolder) {
+                if (context != null) {
+                    TopicDetailViewHolder topicDetailViewHolder = (TopicDetailViewHolder) holder;
+                    ArrayList<ChatsListItemBean.DataBean> chatsCommentListBeanData;
+                    chatsCommentListBeanData = listData.get(0);
+                    ChatsListItemBean.DataBean dataBean = chatsCommentListBeanData.get(0);
+
+                    RequestOptions requestOptions = RequestOptions.circleCropTransform();
+                    Glide.with(context).load(dataBean.getPortrait()).apply(requestOptions).into(topicDetailViewHolder.portraitIv);
+                    topicDetailViewHolder.nameTv.setText(dataBean.getAuthor());
+                    topicDetailViewHolder.publishTimeTv.setText(dataBean.getDate());
+                    topicDetailViewHolder.topicTitleTv.setText(dataBean.getTitle());
+                    topicDetailViewHolder.topicContentTv.setText(dataBean.getContent());
+                    topicDetailViewHolder.likeNumberTv.setText(String.valueOf(dataBean.getLikeNumber()));
+                    if (dataBean.isIsLike()) {
+                        Glide.with(context).load(R.drawable.give_a_like_icon).into(topicDetailViewHolder.likeIv);
+                    } else {
+                        Glide.with(context).load(R.drawable.give_a_unlike_icon).into(topicDetailViewHolder.likeIv);
                     }
-                });
+
+                    topicDetailViewHolder.likeIv.setOnClickListener(v -> {
+                        if (dataBean.isIsLike()) {
+                            Glide.with(context).load(R.drawable.give_a_unlike_icon).into(topicDetailViewHolder.likeIv);
+                            dataBean.setIsLike(false);
+                            int newLikeNumber = dataBean.getLikeNumber() - 1;
+                            topicDetailViewHolder.likeNumberTv.setText(String.valueOf(newLikeNumber));
+                            dataBean.setLikeNumber(newLikeNumber);
+                        } else {
+                            Glide.with(context).load(R.drawable.give_a_like_icon).into(topicDetailViewHolder.likeIv);
+                            dataBean.setIsLike(true);
+                            int newLikeNumber = dataBean.getLikeNumber() + 1;
+                            topicDetailViewHolder.likeNumberTv.setText(String.valueOf(newLikeNumber));
+                            dataBean.setLikeNumber(newLikeNumber);
+                        }
+
+                        chatsListItemEntityDao.update(dataBean.convertToEntity());
+                    });
+                }
 
             }
 
+            if (holder instanceof CommentsViewHolder) {
+                if (context != null) {
+                    CommentsViewHolder commentsViewHolder = (CommentsViewHolder) holder;
+                    ArrayList<ChatsCommentListItemBean.DataBean> chatsCommentListData;
+                    chatsCommentListData = listData.get(1);
+                    ChatsCommentListItemBean.DataBean dataBean = chatsCommentListData.get(position - 1);
+                    RequestOptions requestOptions = RequestOptions.circleCropTransform();
+
+                    Glide.with(context).load(dataBean.getPortrait()).apply(requestOptions).into(commentsViewHolder.portraitIv);
+                    commentsViewHolder.nameTv.setText(dataBean.getAuthor());
+                    commentsViewHolder.publishTimeTv.setText(dataBean.getDate());
+                    commentsViewHolder.topicContentTv.setText(dataBean.getContent());
+                    commentsViewHolder.likeNumberTv.setText(String.valueOf(dataBean.getLikeNumber()));
+                    if (dataBean.isIsLike()) {
+                        Glide.with(context).load(R.drawable.give_a_like_icon).into(commentsViewHolder.likeIv);
+                    } else {
+                        Glide.with(context).load(R.drawable.give_a_unlike_icon).into(commentsViewHolder.likeIv);
+                    }
+                    commentsViewHolder.likeIv.setOnClickListener(new OnClickEvent() {
+                        @Override
+                        public void onSingleClick(View v) {
+                            if (dataBean.isIsLike()) {
+                                Glide.with(context).load(R.drawable.give_a_unlike_icon).into(commentsViewHolder.likeIv);
+                                dataBean.setIsLike(false);
+                                int newLikeNumber = dataBean.getLikeNumber() - 1;
+                                commentsViewHolder.likeNumberTv.setText(String.valueOf(newLikeNumber));
+                                dataBean.setLikeNumber(newLikeNumber);
+                            } else {
+                                Glide.with(context).load(R.drawable.give_a_like_icon).into(commentsViewHolder.likeIv);
+                                dataBean.setIsLike(true);
+                                int newLikeNumber = dataBean.getLikeNumber() + 1;
+                                commentsViewHolder.likeNumberTv.setText(String.valueOf(newLikeNumber));
+                                dataBean.setLikeNumber(newLikeNumber);
+                            }
+
+                            chatsCommentListItemEntityDao.update(dataBean.convertToEntity());
+                        }
+                    });
+
+                }
+            }
         }
 
         @Override
         public int getItemCount() {
-            return chatsCommentListData.size();
+            int size = 0;
+            for (ArrayList list : listData) {
+                size += list.size();
+            }
+            return size;
         }
 
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
+        class CommentsViewHolder extends RecyclerView.ViewHolder {
             @BindView(R.id.portrait_iv)
             ImageView portraitIv;
             @BindView(R.id.name_tv)
@@ -297,7 +310,31 @@ public class TopicDetailActivity extends BaseActivity {
             @BindView(R.id.like_number_tv)
             TextView likeNumberTv;
 
-            public MyViewHolder(@NonNull View itemView) {
+            CommentsViewHolder(@NonNull View itemView) {
+                super(itemView);
+                ButterKnife.bind(this, itemView);
+            }
+        }
+
+        class TopicDetailViewHolder extends RecyclerView.ViewHolder {
+            @BindView(R.id.portrait_iv)
+            ImageView portraitIv;
+            @BindView(R.id.name_tv)
+            TextView nameTv;
+            @BindView(R.id.publish_time_tv)
+            TextView publishTimeTv;
+            @BindView(R.id.topic_title_tv)
+            TextView topicTitleTv;
+            @BindView(R.id.topic_content_tv)
+            TextView topicContentTv;
+            @BindView(R.id.like_iv)
+            ImageView likeIv;
+            @BindView(R.id.like_number_tv)
+            TextView likeNumberTv;
+            @BindView(R.id.comments_tv)
+            TextView commentsTv;
+
+            TopicDetailViewHolder(@NonNull View itemView) {
                 super(itemView);
                 ButterKnife.bind(this, itemView);
             }

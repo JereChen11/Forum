@@ -19,7 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="Adam777"
+        android:text="JereChen"
         app:layout_constraintBottom_toBottomOf="@id/portrait_iv"
         app:layout_constraintStart_toEndOf="@id/portrait_iv"
         app:layout_constraintTop_toTopOf="@id/portrait_iv" />
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="30dp"
-        android:text="2020-4-27"
+        android:text="2020-5-7"
         app:layout_constraintBottom_toBottomOf="@id/portrait_iv"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/portrait_iv" />
@@ -50,15 +50,30 @@
         app:layout_constraintStart_toEndOf="@id/portrait_iv"
         app:layout_constraintTop_toBottomOf="@id/portrait_iv" />
 
+    <TextView
+        android:id="@+id/topic_content_tv"
+        style="@style/TopicChatTextStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:ellipsize="end"
+        android:gravity="left"
+        android:maxLines="4"
+        android:text="Anyone here? Let's have a chat~Anyone here? Anyone here? Let's have a chat~Anyone here?"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/portrait_iv"
+        app:layout_constraintTop_toBottomOf="@id/topic_title_tv" />
+
     <ImageView
         android:id="@+id/like_iv"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="130dp"
+        android:layout_marginEnd="50dp"
         android:src="@drawable/give_a_unlike_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/topic_title_tv" />
+        app:layout_constraintTop_toBottomOf="@id/topic_content_tv" />
 
     <TextView
         android:id="@+id/like_number_tv"
@@ -66,39 +81,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:text="500"
+        android:text="0"
         app:layout_constraintBottom_toBottomOf="@id/like_iv"
         app:layout_constraintStart_toEndOf="@id/like_iv"
         app:layout_constraintTop_toTopOf="@id/like_iv" />
 
-    <TextView
-        android:id="@+id/view_number_tv"
-        style="@style/TopicChatTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="209"
-        app:layout_constraintBottom_toBottomOf="@id/like_iv"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/like_iv" />
-
-    <TextView
-        style="@style/TopicChatTextStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="Re: "
-        app:layout_constraintBottom_toBottomOf="@id/like_iv"
-        app:layout_constraintEnd_toStartOf="@id/view_number_tv"
-        app:layout_constraintTop_toTopOf="@id/like_iv" />
-
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_marginTop="20dp"
+        android:layout_height="3dp"
+        android:layout_marginTop="10dp"
         android:background="@color/gray"
-        app:layout_constraintTop_toBottomOf="@id/view_number_tv" />
+        app:layout_constraintTop_toBottomOf="@id/like_number_tv" />
 
+    <TextView
+        android:id="@+id/comments_tv"
+        style="@style/TopicChatTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:text="Comments"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/like_number_tv" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

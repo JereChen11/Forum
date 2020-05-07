@@ -108,6 +108,7 @@ public class ChatsCommentListItemBean {
 
         public ChatsCommentListItemEntity convertToEntity() {
             ChatsCommentListItemEntity entity = new ChatsCommentListItemEntity();
+            entity.setId(this.id);
             entity.setPortrait(this.portrait);
             entity.setAuthor(this.author);
             entity.setDate(this.date);
