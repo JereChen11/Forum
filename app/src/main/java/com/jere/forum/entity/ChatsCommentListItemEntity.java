@@ -41,6 +41,7 @@ public class ChatsCommentListItemEntity {
 
     public ChatsCommentListItemBean.DataBean convertToBean() {
         ChatsCommentListItemBean.DataBean dataBean = new ChatsCommentListItemBean.DataBean();
+        dataBean.setId(this.id);
         dataBean.setPortrait(this.portrait);
         dataBean.setAuthor(this.author);
         dataBean.setDate(this.date);
