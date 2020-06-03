@@ -18,6 +18,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 public class TitleBarCustomView extends ConstraintLayout {
 
     private TextView titleTv;
+
     public TitleBarCustomView(Context context) {
         this(context, null);
     }

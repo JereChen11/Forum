@@ -1,4 +1,4 @@
-package com.jere.forum.chats;
+package com.jere.forum.utils;
 
 
 import android.content.Context;

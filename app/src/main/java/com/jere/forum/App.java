@@ -27,11 +27,6 @@ public class App extends Application {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "chats-db");
         Database db = helper.getWritableDb();
 
-        // encrypted SQLCipher database
-        // note: you need to add SQLCipher to your dependencies, check the build.gradle file
-        // DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "notes-db-encrypted");
-        // Database db = helper.getEncryptedWritableDb("encryption-key");
-
         daoSession = new DaoMaster(db).newSession();
     }
 
